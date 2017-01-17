@@ -28,24 +28,37 @@
 
 #include "plist/plist.h"
 
+#ifndef WIN32
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <sys/time.h>
+#else
+#include <time.h>
+
+struct timeval_t {
+	long    tv_sec;         /* seconds */
+	long    tv_usec;        /* and microseconds */
+};
+#endif // !WIN32
 
 #ifdef _MSC_VER
 #pragma warning(disable:4996)
 #pragma warning(disable:4244)
 #endif
 
+#ifndef PLIST_STATIC
 #ifdef WIN32
-  #define PLIST_API __declspec( dllexport )
+#define PLIST_API __declspec( dllexport )
 #else
-  #ifdef HAVE_FVISIBILITY
-    #define PLIST_API __attribute__((visibility("default")))
-  #else
-    #define PLIST_API
-  #endif
+#ifdef HAVE_FVISIBILITY
+#define PLIST_API __attribute__((visibility("default")))
+#else
+#define PLIST_API
 #endif
+#endif
+#else
+#define PLIST_API
+#endif // !PLIST_STATIC
 
 struct plist_data_s
 {

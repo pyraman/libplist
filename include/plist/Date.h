@@ -24,7 +24,19 @@
 
 #include <plist/Node.h>
 #include <ctime>
+#ifdef WIN32
+#include <time.h>
+
+struct timeval_t {
+	long    tv_sec;         /* seconds */
+	long    tv_usec;        /* and microseconds */
+};
+
+typedef timeval_t timeval;
+
+#else
 #include <sys/time.h>
+#endif
 
 namespace PList
 {
